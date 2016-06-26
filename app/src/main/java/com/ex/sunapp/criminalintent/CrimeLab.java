@@ -2,6 +2,7 @@ package com.ex.sunapp.criminalintent;
 
 
 import android.content.Context;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +15,7 @@ public class CrimeLab {
 
     private CrimeLab(Context context){
         mCrimes = new ArrayList<>();
+
         for(int i = 0;i < 100;i++){
             Crime crime = new Crime();
             crime.setTitle("crime #" + i);
@@ -28,10 +30,12 @@ public class CrimeLab {
     }
 
     public Crime getCrime(UUID uuid){
+
         for(Crime crime : mCrimes){
-            if(crime.getId() == uuid)
+            if(crime.getId().equals(uuid))
                 return crime;
         }
+
         return null;
     }
 
