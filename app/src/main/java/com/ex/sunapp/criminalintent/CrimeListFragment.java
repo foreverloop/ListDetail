@@ -61,7 +61,7 @@ public class CrimeListFragment extends Fragment {
         @Override
         public void onClick(View v) {
             mLastPosition  = getAdapterPosition();
-            Intent i = CrimeActivity.newIntent(getActivity(),mCrime.getId());
+            Intent i = CrimePagerActivity.newIntent(getActivity(),mCrime.getId());
             startActivity(i);
         }
     }
@@ -79,7 +79,6 @@ public class CrimeListFragment extends Fragment {
             mCrimeAdapter = new CrimeAdapter(crimes);
             mCrimeRecyclerView.setAdapter(mCrimeAdapter);
         } else {
-
             mCrimeAdapter.notifyItemChanged(mLastPosition);
         }
     }
