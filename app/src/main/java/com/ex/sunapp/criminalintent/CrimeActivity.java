@@ -17,13 +17,13 @@ public class CrimeActivity extends SingleFragmentActivity {
     @Override
     protected Fragment createFragment() {
         UUID crimeId = (UUID) getIntent().getSerializableExtra(EXTRA_CRIME_ID);
-        Log.i("before crfr","uuid=" + crimeId);
+
         return CrimeFragment.newInstance(crimeId);
     }
 
     public static Intent newIntent(Context packageContext, UUID crimeId){
         Intent i = new Intent(packageContext,CrimeActivity.class);
-        Log.i("before act intent","new intent for activity:" + crimeId);
+
         i.putExtra(EXTRA_CRIME_ID,crimeId);
         return i;
     }
