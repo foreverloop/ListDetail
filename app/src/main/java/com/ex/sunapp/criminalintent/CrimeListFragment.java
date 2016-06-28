@@ -1,5 +1,6 @@
 package com.ex.sunapp.criminalintent;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -24,6 +25,7 @@ public class CrimeListFragment extends Fragment {
 
     private RecyclerView mCrimeRecyclerView;
     private CrimeAdapter mCrimeAdapter;
+    private TextView mNoCrimesTextView;
     private int mLastPosition;
     private boolean mSubtitleVisible;
     private static final String SAVED_SUBTITLE_VISIBLE = "subtitle";
@@ -45,7 +47,10 @@ public class CrimeListFragment extends Fragment {
 
 
         mCrimeRecyclerView = (RecyclerView) v.findViewById(R.id.crime_recycler_view);
-        mCrimeRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mNoCrimesTextView = (TextView) v.findViewById(R.id.no_crimes_recycle_text);
+
+        mCrimeRecyclerView.setLayoutManager(new WrapContentLinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+
         updateUI();
         return v;
     }
@@ -91,6 +96,15 @@ public class CrimeListFragment extends Fragment {
     private void updateUI(){
         CrimeLab crimeLab = CrimeLab.get(getActivity());
         List<Crime> crimes = crimeLab.getCrimes();
+
+        if(crimes.size() == 0){
+            mCrimeRecyclerView.setVisibility(View.GONE);
+            mNoCrimesTextView.setVisibility(View.VISIBLE);
+        } else {
+            mNoCrimesTextView.setVisibility(View.GONE);
+            mCrimeRecyclerView.setVisibility(View.VISIBLE);
+        }
+
         if(mCrimeAdapter == null) {
             mCrimeAdapter = new CrimeAdapter(crimes);
             mCrimeRecyclerView.setAdapter(mCrimeAdapter);
@@ -136,8 +150,8 @@ public class CrimeListFragment extends Fragment {
     private void updateSubtitle(){
         CrimeLab crimeLab = CrimeLab.get(getActivity());
         int crimeCount = crimeLab.getCrimes().size();
-        String subtitle = getString(R.string.subtitle_format,crimeCount);
-
+        //String subtitle = getString(R.string.subtitle_format,crimeCount);
+        String subtitle = getResources().getQuantityString(R.plurals.subtitle_plural,crimeCount,crimeCount);
         if(!mSubtitleVisible)
             subtitle = null;
 
@@ -177,6 +191,23 @@ public class CrimeListFragment extends Fragment {
         @Override
         public int getItemCount() {
             return mCrimes.size();
+        }
+    }
+
+    public class WrapContentLinearLayoutManager extends LinearLayoutManager {
+
+
+        public WrapContentLinearLayoutManager(Context context, int orientation, boolean reverseLayout) {
+            super(context, orientation, reverseLayout);
+        }
+
+        @Override
+        public void onLayoutChildren(RecyclerView.Recycler recycler, RecyclerView.State state) {
+            try {
+                super.onLayoutChildren(recycler, state);
+            } catch (IndexOutOfBoundsException e) {
+                Log.e("probe", "bug with 23.1.1, RecyclerView not forgetting state correctly");
+            }
         }
     }
 }
