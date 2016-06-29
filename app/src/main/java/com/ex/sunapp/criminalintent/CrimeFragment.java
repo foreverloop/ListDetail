@@ -65,7 +65,7 @@ public class CrimeFragment extends Fragment {
         mDateButton = (Button) v.findViewById(R.id.crime_date_button);
         mTitleText =  (EditText) v.findViewById(R.id.crime_title);
         mSolvedCheckbox = (CheckBox) v.findViewById(R.id.crime_solved);
-
+        Log.i("CrimeFrag","creating view");
         //mDateButton.setText(DateFormat.getLongDateFormat(getActivity()).format(mCrime.getDate()));
         updateDate();
         mDateButton.setOnClickListener(new View.OnClickListener() {
@@ -140,6 +140,12 @@ public class CrimeFragment extends Fragment {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        CrimeLab.get(getActivity()).updateCrime(mCrime);
     }
 
     private void updateDate() {
