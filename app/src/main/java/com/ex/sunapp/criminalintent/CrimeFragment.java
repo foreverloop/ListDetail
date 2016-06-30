@@ -80,6 +80,8 @@ public class CrimeFragment extends Fragment {
         mReportButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //create implicit intent asking for an app with an activity which accepts ACTION_SEND
+                //set type also specifies the type of thing we're sending, in this instance plain text
                 Intent i = new Intent(Intent.ACTION_SEND);
                 i.setType("text/plain");
                 i.putExtra(Intent.EXTRA_TEXT,getCrimeReport());
@@ -92,9 +94,12 @@ public class CrimeFragment extends Fragment {
             }
         });
 
+        //create an intent which says "we want to pick an item from contacts", not as vauge
+        //as the suspect button intent
         final Intent pickContact = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
 
         PackageManager pm = getActivity().getPackageManager();
+        //disable button if there is no app matching the pickContact intent
         if(pm.resolveActivity(pickContact, PackageManager.MATCH_DEFAULT_ONLY) == null)
             mSuspectButton.setEnabled(false);
 
@@ -156,7 +161,7 @@ public class CrimeFragment extends Fragment {
 
         if(resultCode != Activity.RESULT_OK)
             return;
-        
+
         if(requestCode == REQUEST_DATE){
             Date date = (Date) data.getSerializableExtra(DatePickerFragment.EXTRA_DATE);
             mCrime.setDate(date);
