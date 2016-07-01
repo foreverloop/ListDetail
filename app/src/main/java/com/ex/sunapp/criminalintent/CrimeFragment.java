@@ -10,6 +10,7 @@ import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.ShareCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.format.DateFormat;
@@ -82,15 +83,26 @@ public class CrimeFragment extends Fragment {
             public void onClick(View v) {
                 //create implicit intent asking for an app with an activity which accepts ACTION_SEND
                 //set type also specifies the type of thing we're sending, in this instance plain text
-                Intent i = new Intent(Intent.ACTION_SEND);
-                i.setType("text/plain");
-                i.putExtra(Intent.EXTRA_TEXT,getCrimeReport());
-                i.putExtra(Intent.EXTRA_SUBJECT,getString(R.string.crime_report_subject));
 
-                //explicitly create a chooser every time, otherwise user preference can be stored
-                i = Intent.createChooser(i,getString(R.string.send_report));
+//                Intent i = new Intent(Intent.ACTION_SEND);
+//                i.setType("text/plain");
+//                i.putExtra(Intent.EXTRA_TEXT,getCrimeReport());
+//                i.putExtra(Intent.EXTRA_SUBJECT,getString(R.string.crime_report_subject));
+//
+//                //explicitly create a chooser every time, otherwise user preference can be stored
+//                i = Intent.createChooser(i,getString(R.string.send_report));
+//
+//                startActivity(i);
 
-                startActivity(i);
+                //IntentBuilder can be used also to create a new intent
+                //which is inherently an Intent.ACTION_SEND flag
+                Intent iv = ShareCompat.IntentBuilder.from(getActivity())
+                                         .setType("text/plain")
+                        .getIntent();
+                iv.putExtra(Intent.EXTRA_TEXT,getCrimeReport());
+                iv.putExtra(Intent.EXTRA_SUBJECT,getString(R.string.crime_report_subject));
+
+                startActivity(iv);
             }
         });
 
