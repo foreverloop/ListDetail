@@ -32,7 +32,7 @@ import java.util.Date;
 import java.util.UUID;
 
 public class CrimeFragment extends Fragment {
-
+    
     private Crime mCrime;
     private EditText mTitleText;
     private Button mDateButton;
