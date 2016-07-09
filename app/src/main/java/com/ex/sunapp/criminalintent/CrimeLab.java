@@ -98,7 +98,4 @@ public class CrimeLab {
         return values;
     }
 
-
-
-
 }
