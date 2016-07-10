@@ -4,7 +4,7 @@
 
     <item android:id="@+id/menu_item_delete_crime"
           android:title="@string/delete_crimes"
-          android:icon="@android:drawable/ic_menu_delete"
+          android:icon="@drawable/ic_remove_white_24dp"
           app:showAsAction="ifRoom|withText"/>
 
 </menu>
